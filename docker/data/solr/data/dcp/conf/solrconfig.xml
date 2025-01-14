@@ -667,7 +667,7 @@
   <requestHandler name="/select" class="solr.SearchHandler">
     <lst name="defaults">
       <str name="echoParams">explicit</str>
-      <int name="rows">10</int>
+      <int name="rows">20</int>
     </lst>
   </requestHandler>
 
@@ -683,7 +683,58 @@
   <!-- Shared parameters for multiple Request Handlers -->
   <initParams path="/update/**,/query,/select,/spell">
     <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="defType">edismax</str>
+      <str name="q.alt">*</str>
       <str name="df">_text_</str>
+      <str name="qf">biblnum content_bibl-citation content_footnotes content_letter-source content_summary content_textual-content date_str display-name display-namereg-canonical display-repo-desc display-repo-tag document-id lognum meta-bibl-citation meta-bibl-location meta-date-web-only meta-view-mode namereg-id nameregnum path preview-tile recipient reponum repository repository-elem repository-full repository-id search-addressee search-addressee-canonical search-addressee-id search-author search-author-canonical search-author-id search-classmark search-correspondent search-correspondent-canonical search-correspondent-id search-dates search-name search-name-canonical search-name-synonym search-repository title</str>
+      <str name="q.op">AND</str>
+      <str name="hl">true</str>
+      <str name="hl.fl">biblnum content_bibl-citation content_footnotes content_letter-source content_summary content_textual-content date_str display-name display-namereg-canonical display-repo-desc display-repo-tag document-id meta-bibl-citation meta-date-web-only nameregnum recipient reponum search-addressee search-addressee-canonical search-author search-author-canonical search-classmark search-correspondent search-correspondent-canonical search-name search-repository title</str>
+      <str name="hl.requireFieldMatch">true</str>
+      <str name="fl">*</str>
+      <str name="spellcheck">true</str>
+      <str name="hl.simple.pre"><![CDATA[<em class="match">]]></str>
+      <str name="hl.simple.post"><![CDATA[</em>]]></str>
+      <str name="facet">true</str>
+      <str name="facet.field">{!ex=dt key=f1-document-type}facet-document-type</str>
+      <str name="facet.field">{!ex=dt key=f1-author}facet-author</str>
+      <str name="facet.field">{!ex=dt key=f1-addressee}facet-addressee</str>
+      <str name="facet.field">{!ex=dt key=f1-correspondent}facet-correspondent</str>
+      <!--<str name="facet.field">facet-date</str>-->
+      <str name="facet.field">{!ex=dt key=f1-year}facet-year</str>
+      <str name="facet.field">{!ex=dt key=f1-year-month}facet-year-month</str>
+      <str name="facet.field">{!ex=dt key=f1-year-month-day}facet-year-month-day</str>
+      <str name="facet.field">{!ex=dt key=f1-repository}facet-repository</str>
+      <!--<str name="facet.field">facet-term</str>-->
+      <str name="facet.field">{!ex=dt key=f1-volume}facet-volume</str>
+      <str name="facet.field">{!ex=dt key=f1-entry-cancelled}facet-entry-cancelled</str>
+      <str name="facet.field">{!ex=dt key=f1-document-online}facet-document-online</str>
+      <str name="facet.field">{!ex=dt key=f1-letter-published}facet-letter-published</str>
+      <str name="facet.field">{!ex=dt key=f1-translation-publish}facet-translation-published</str>
+      <str name="facet.field">{!ex=dt key=f1-footnotes-published}facet-footnotes-published</str>
+      <str name="facet.field">{!ex=dt key=f1-has-tnotes}facet-has-tnotes</str>
+      <str name="facet.field">{!ex=dt key=f1-has-cdnotes}facet-has-cdnotes</str>
+      <str name="facet.field">{!ex=dt key=f1-has-annotations}facet-has-annotations</str>
+      <str name="facet.field">{!ex=dt key=f1-linked-to-cudl-images}facet-linked-to-cudl-images</str>
+      <str name="facet.field">{!ex=dt key=f1-darwin-letter}facet-darwin-letter</str>
+      <str name="facet.sort">index</str>
+      <str name="facet.mincount">1</str>
+      <str name="facet.limit">-1</str>
+      <str name="hl.method">unified</str>
+      <str name="hl.fragsize">70</str>
+      <str name="hl.fragsizeIsMinimum">false</str>
+      <str name="hl.snippets">999</str>
+      <str name="hl.bs.type">CHARACTER</str>
+      <str name="hl.maxAnalyzedChars">1048576</str><!-- 1mb -->
+      <str name="f.facet-author.facet.limit">5</str>
+      <str name="f.facet-addressee.facet.limit">5</str>
+      <str name="f.facet-correspondent.facet.limit">5</str>
+      <str name="f.facet-subjects.facet.sort">count</str>
+      <str name="f.facet-author.facet.sort">count</str>
+      <str name="f.facet-addressee.facet.sort">count</str>
+      <str name="f.facet-correspondent.facet.sort">count</str>
+      <int name="rows">20</int>
     </lst>
   </initParams>
 
@@ -788,7 +839,7 @@
                   default="true"
                   class="solr.highlight.GapFragmenter">
         <lst name="defaults">
-          <int name="hl.fragsize">100</int>
+          <int name="hl.fragsize">70</int>
         </lst>
       </fragmenter>
 
