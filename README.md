@@ -1,5 +1,7 @@
 # Instructions
 
+This repository is based off [CUDL Solr](https://github.com/cambridge-collection/cudl-solr). The default branch for the darwin release is `darwin-main`. `main` contains cudl-solr.
+
 The solr core configs and schemata are contained in `docker/solr`.
 
 ## Local Build
