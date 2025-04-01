@@ -468,6 +468,9 @@
   <field name="_text_" type="text_general" multiValued="true" indexed="true" stored="false"/>
   <field name="_version_" type="plong" indexed="false" stored="false"/>
   <field name="biblnum" type="plongs" multiValued="false" indexed="true" stored="true"/>
+  <field name="brandCite" type="text_general"/>
+  <field name="brandName" type="text_general"/>
+  <field name="browse-document-type" type="text_general"/>
   <field name="calendarnum" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- searchForm - letter -->
   <!--<field name="content" type="text_general" indexed="false" stored="false"/>
   <field name="content.bibl-citation" type="text_general"/>
@@ -477,6 +480,7 @@
   <field name="content.letter-source" type="text_general" multiValued="false" indexed="true" stored="true"/><!-\- searchForm: transcription only -\->
   <field name="content.summary" type="text_general" multiValued="false" indexed="true" stored="true"/><!-\- searchForm: transcription only -\->
   <field name="content.textual-content" type="text_general" multiValued="false" indexed="true" stored="true"/><!-\- searchForm: transcription only -\->-->
+  <field name="collection" type="text_general"/>
   <field name="content_bibl-citation" type="text_general"/>
   <field name="content_bibliography-content" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="content_footnotes" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- searchForm: footnotes only -->
@@ -485,26 +489,29 @@
   <field name="content_letter-source" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- searchForm: transcription only -->
   <field name="content_summary" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- searchForm: transcription only -->
   <field name="content_textual-content" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="darwin-received" type="strings" multiValued="false" indexed="true" stored="true"/>
-  <field name="darwin-sent" type="strings" multiValued="false" indexed="true" stored="true"/>
+  <field name="contributor" type="text_general"/>
+  <field name="creator" type="text_general"/>
+  <field name="darwin-received" type="strings" multiValued="false" indexed="false" stored="false"/>
+  <field name="darwin-sent" type="strings" multiValued="false" indexed="false" stored="false"/>
   <field name="date" type="text_general" indexed="true" stored="true" multiValued="false"/><!-- used by JSON search result -->
-  <field name="date_str" type="text_general" indexed="true" stored="true"/>
-  <field name="date-iso" type="pdates" indexed="true" stored="true"/><!-- ISO searchForm - letter - api must remap silently to date -->
+  <field name="date-iso" type="text_general" indexed="true" stored="true"/><!-- ISO searchForm - letter - api must remap silently to date -->
   <field name="dateEnd" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- TODO: Can I define a specific date type without timestamp with zone -->
-  <field name="dateEnd-iso" type="pdates" multiValued="false" indexed="true" stored="true"/>
-  <field name="dateStart" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- TODO: Can I define a specific date type without timestamp with zone -->
-  <field name="dateStart-iso" type="pdates" multiValued="false" indexed="true" stored="true"/>
+  <field name="dateEnd-iso" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="dateRange" type="date_range" multiValued="true" indexed="true" stored="true"/>
-  <field name="displayDate" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="dateStart" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- TODO: Can I define a specific date type without timestamp with zone -->
+  <field name="dateStart-iso" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="date_elements" type="text_general" indexed="true" stored="true"/>
+  <field name="date_str" type="text_general" indexed="true" stored="true"/>
   <field name="dates-elem" type="text_general" indexed="true" stored="true"/><!-- namereg - date - should just be a formatted date with extra whitespace, equal to search-dates   -->
   <field name="day" type="plongs" multiValued="true" indexed="true" stored="true"/>
-  <field name="deprecated" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="direction" type="string" multiValued="false" indexed="true" stored="true"/>
+  <field name="deprecated" type="text_general" multiValued="false" indexed="false" stored="false"/>
+  <field name="direction" type="string" multiValued="false" indexed="false" stored="false"/>
+  <field name="display" type="text_general"/>
   <field name="display-name" type="text_general" indexed="true" stored="true"/>
   <field name="display-namereg-canonical" type="text_general" indexed="true" stored="true"/><!-- namereg canonical -->
   <field name="display-repo-desc" type="text_general" indexed="true" stored="true"/><!-- long name --><!-- searchForm - repo -->
   <field name="display-repo-tag" type="text_general" indexed="true" stored="true"/><!-- short --><!-- searchForm - repo --><!-- repo - document online does not exist but field is listed in editorial view -->
+  <field name="displayDate" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="document-id" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- namereg id, letter no, searchForm - letter -->
   <field name="document-path" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="entry-cancelled" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- searchForm - reverse to exclude-cancelled -->
@@ -512,44 +519,54 @@
   <field name="exclude-widedate" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="facet-addressee" type="strings" docValues="true" indexed="false" stored="true"/>
   <field name="facet-author" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-collection" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-contributor" type="strings" docValues="true" indexed="false" stored="true"/>
   <field name="facet-correspondent" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-cdl-images-linked" type="strings" docValues="true" indexed="false" stored="true"/>
   <field name="facet-darwin-letter" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
   <field name="facet-date" type="strings" docValues="true" indexed="false" stored="true"/>
   <field name="facet-day" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-decade" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-decade-year" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-decade-year-month" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-decade-year-month-day" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-document-has" type="strings" docValues="true" indexed="false" stored="false"/>
   <field name="facet-document-online" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/><!-- bibl, namereg, documentation, letter - document online -->
   <field name="facet-document-type" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
   <field name="facet-entry-cancelled" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
   <field name="facet-footnotes-published" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
   <field name="facet-has-annotations" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
-  <field name="facet-has-cdnotes" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-has-cdnotes" type="strings" multiValued="false" docValues="true" indexed="false" stored="false"/>
   <field name="facet-has-summary" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
-  <field name="facet-has-tnotes" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-has-tnotes" type="strings" multiValued="false" docValues="true" indexed="false" stored="false"/>
   <field name="facet-letter-published" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
   <field name="facet-linked-to-cudl-images" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
   <field name="facet-month" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-page-published" type="strings" docValues="true" indexed="false" stored="true"/>
   <field name="facet-repository" type="strings" docValues="true" indexed="false" stored="true"/>
   <field name="facet-status" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
   <field name="facet-term" type="strings" docValues="true" indexed="false" stored="true"/>
-  <field name="facet-translation-published" type="strings" docValues="true" indexed="true" stored="false"/>
-  <field name="facet-volume" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-transcription-available" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-translation-published" type="strings" docValues="true" indexed="false" stored="true"/>
+  <field name="facet-volume" type="strings" docValues="true" indexed="false" stored="false"/>
   <field name="facet-widedate" type="strings" multiValued="false" docValues="true" indexed="false" stored="true"/>
   <field name="facet-year" type="strings" docValues="true" indexed="false" stored="true"/>
   <field name="facet-year-month" type="strings" docValues="true" indexed="false" stored="true"/>
   <field name="facet-year-month-day" type="strings" docValues="true" indexed="false" stored="true"/>
-  <field name="filename" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="fileID" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
-  <field name="footnotes-published" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="footnotes-viewable" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="format" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="has-annotations" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="has-cdnotes" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="has-tnotes" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="filename" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="footnotes-published" type="text_general" multiValued="false" indexed="false" stored="false"/>
+  <field name="footnotes-viewable" type="text_general" multiValued="false" indexed="false" stored="false"/>
+  <field name="format" type="text_general" multiValued="false" indexed="false" stored="false"/>
+  <field name="has-annotations" type="text_general" multiValued="false" indexed="false" stored="false"/>
+  <field name="has-cdnotes" type="text_general" multiValued="false" indexed="false" stored="false"/>
+  <field name="has-tnotes" type="text_general" multiValued="false" indexed="false" stored="false"/>
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
   <field name="identifier" type="text_general" indexed="true" stored="true"/>
   <field name="index" type="booleans" indexed="true" stored="true"/>
   <field name="letter-published" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="letter-viewable" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="lognum" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- title - Log -->
+  <field name="lognum" type="text_general" multiValued="false" indexed="false" stored="false"/><!-- title - Log -->
   <field name="meta-bibl-checked" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- checked --><!-- searchForm - bibl -->
   <field name="meta-bibl-citation" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- citation --><!-- searchForm - bibl --><!-- copy to new title  -->
   <field name="meta-bibl-citation-short" type="text_general"/>
@@ -563,25 +580,28 @@
   <field name="meta-view-mode" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="month" type="plongs" multiValued="true" indexed="true" stored="true"/>
   <field name="namereg-id" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- searchForm - namereg -->
-  <field name="nameregnum" type="plongs" multiValued="false" indexed="true" stored="true"/>
+  <field name="nameregnum" type="strings" multiValued="false" indexed="true" stored="true"/>
+  <field name="page-published" type="text_general"/>
+  <field name="page-viewable" type="text_general"/>
   <field name="path" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="preview-tile" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="publisher" type="text_general"/>
   <field name="recipient" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="reponum" type="plongs" multiValued="false" indexed="true" stored="true"/>
+  <field name="reponum" type="strings" multiValued="false" indexed="true" stored="true"/>
   <field name="repository" type="text_general" indexed="true" stored="true"/>
   <field name="repository-elem" type="text_general" indexed="true" stored="true"/>
   <field name="repository-full" type="text_general" indexed="true" stored="true"/>
   <field name="repository-id" type="text_general" indexed="true" stored="true"/>
   <field name="search-addressee" type="text_general" indexed="true" stored="true"/><!-- Addressee --><!-- searchForm - letter -->
   <field name="search-addressee-canonical" type="text_general" indexed="true" stored="true"/>
-  <field name="search-addressee-id" type="plongs" indexed="true" stored="true"/>
+  <field name="search-addressee-id" type="strings" indexed="true" stored="true"/>
   <field name="search-author" type="text_general" indexed="true" stored="true"/><!-- Author --><!-- searchForm - letter -->
   <field name="search-author-canonical" type="text_general" indexed="true" stored="true"/>
-  <field name="search-author-id" type="plongs" indexed="true" stored="true"/>
+  <field name="search-author-id" type="strings" indexed="true" stored="true"/>
   <field name="search-classmark" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- letter - Classmark --><!-- searchForm - letter -->
   <field name="search-correspondent" type="text_general" indexed="true" stored="true"/><!-- searchForm - letter -->
   <field name="search-correspondent-canonical" type="text_general" indexed="true" stored="true"/>
-  <field name="search-correspondent-id" type="plongs" multiValued="true"  indexed="true" stored="true"/>
+  <field name="search-correspondent-id" type="strings" multiValued="true" indexed="true" stored="true"/>
   <field name="search-date" type="plongs" indexed="true" stored="true"/>
   <field name="search-dates" type="text_general" indexed="true" stored="true"/><!-- searchForm - namereg -->
   <field name="search-document-type" type="text_general" multiValued="false" indexed="true" stored="true"/>
@@ -615,7 +635,7 @@
   <field name="translation-viewable" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="type" type="text_general" multiValued="false" indexed="true" stored="true"/><!-- document-type -->
   <field name="url" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="volume" type="text_general" multiValued="true" indexed="true" stored="true"/><!-- new namereg volume - join string -->
+  <field name="volume" type="text_general" multiValued="true" indexed="false" stored="false"/><!-- new namereg volume - join string -->
   <field name="widedate" type="booleans" multiValued="false" indexed="true" stored="true"/><!-- exclude widedate --><!-- create exclude-widedate field that reverses the boolean -->
   <!--<dynamicField name="*_txt_en_split_tight" type="text_en_splitting_tight" indexed="true" stored="true"/>
   <dynamicField name="*_descendent_path" type="descendent_path" indexed="true" stored="true"/>
@@ -694,8 +714,8 @@
   <!--<copyField source="content_summary" dest="summary"/>-->
   <copyField source="content_textual-content" dest="_text_"/>
   <copyField source="display-repo-desc" dest="_text_"/>
-  <copyField source="facet-month" dest="month"/>
   <copyField source="facet-day" dest="day"/>
+  <copyField source="facet-month" dest="month"/>
   <copyField source="id" dest="_text_"/>
   <copyField source="meta-date-web-only" dest="displayDate"/>
   <copyField source="path" dest="url"/>
@@ -707,4 +727,22 @@
   <copyField source="search-classmark" dest="_text_"/>
   <copyField source="search-name" dest="_text_"/>
   <copyField source="title-short" dest="_text_"/>
+  <copyField source="creator" dest="creator_str" maxChars="256"/>
+  <copyField source="contributor" dest="contributor_str" maxChars="256"/>
+  <copyField source="facet-decade-year-month-day" dest="facet-decade-year-month-day_str" maxChars="256"/>
+  <copyField source="publisher" dest="publisher_str" maxChars="256"/>
+  <copyField source="facet-decade-year" dest="facet-decade-year_str" maxChars="256"/>
+  <copyField source="facet-decade" dest="facet-decade_str" maxChars="256"/>
+  <copyField source="facet-decade-year-month" dest="facet-decade-year-month_str" maxChars="256"/>
+  <copyField source="brandName" dest="brandName_str" maxChars="256"/>
+  <copyField source="facet-collection" dest="facet-collection_str" maxChars="256"/>
+  <copyField source="facet-contributor" dest="facet-contributor_str" maxChars="256"/>
+  <copyField source="collection" dest="collection_str" maxChars="256"/>
+  <copyField source="page-published" dest="page-published_str" maxChars="256"/>
+  <copyField source="facet-transcription-available" dest="facet-transcription-available_str" maxChars="256"/>
+  <copyField source="facet-page-published" dest="facet-page-published_str" maxChars="256"/>
+  <copyField source="display" dest="display_str" maxChars="256"/>
+  <copyField source="browse-document-type" dest="browse-document-type_str" maxChars="256"/>
+  <copyField source="page-viewable" dest="page-viewable_str" maxChars="256"/>
+<copyField source="facet-document-has" dest="facet-document-has_str" maxChars="256"/>
 </schema>

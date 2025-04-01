@@ -702,22 +702,15 @@
       <str name="facet.field">{!ex=dt key=f1-addressee}facet-addressee</str>
       <str name="facet.field">{!ex=dt key=f1-correspondent}facet-correspondent</str>
       <!--<str name="facet.field">facet-date</str>-->
-      <str name="facet.field">{!ex=dt key=f1-year}facet-year</str>
-      <str name="facet.field">{!ex=dt key=f1-year-month}facet-year-month</str>
-      <str name="facet.field">{!ex=dt key=f1-year-month-day}facet-year-month-day</str>
+      <str name="facet.field">{!ex=dt key=f1-decade}facet-decade</str>
+      <str name="facet.field">{!ex=dt key=f1-decade-year}facet-decade-year</str>
+      <str name="facet.field">{!ex=dt key=f1-decade-year-month}facet-decade-year-month</str>
+      <str name="facet.field">{!ex=dt key=f1-decade-year-month-day}facet-decade-year-month-day</str>
       <str name="facet.field">{!ex=dt key=f1-repository}facet-repository</str>
       <!--<str name="facet.field">facet-term</str>-->
-      <str name="facet.field">{!ex=dt key=f1-volume}facet-volume</str>
-      <str name="facet.field">{!ex=dt key=f1-entry-cancelled}facet-entry-cancelled</str>
-      <str name="facet.field">{!ex=dt key=f1-document-online}facet-document-online</str>
-      <str name="facet.field">{!ex=dt key=f1-letter-published}facet-letter-published</str>
-      <str name="facet.field">{!ex=dt key=f1-translation-published}facet-translation-published</str>
-      <str name="facet.field">{!ex=dt key=f1-footnotes-published}facet-footnotes-published</str>
-      <str name="facet.field">{!ex=dt key=f1-has-tnotes}facet-has-tnotes</str>
-      <str name="facet.field">{!ex=dt key=f1-has-cdnotes}facet-has-cdnotes</str>
-      <str name="facet.field">{!ex=dt key=f1-has-annotations}facet-has-annotations</str>
-      <str name="facet.field">{!ex=dt key=f1-linked-to-cudl-images}facet-linked-to-cudl-images</str>
-      <str name="facet.field">{!ex=dt key=f1-darwin-letter}facet-darwin-letter</str>
+      <str name="facet.field">{!ex=dt key=f1-contributor}facet-contributor</str>
+      <str name="facet.field">{!ex=dt key=f1-transcription-available}facet-transcription-available</str>
+      <str name="facet.field">{!ex=dt key=f1-cdl-images-linked}facet-cdl-images-linked</str>
       <str name="facet.sort">index</str>
       <str name="facet.mincount">1</str>
       <str name="facet.limit">-1</str>
@@ -732,6 +725,10 @@
       <str name="f.facet-correspondent.facet.limit">5</str>
       <str name="f.facet-repository.facet.limit">5</str>
       <str name="f.facet-volume.facet.limit">5</str>
+      <str name="f.facet-decade.facet.limit">200</str>
+      <str name="f.facet-decade-year.facet.limit">30</str>
+      <str name="f.facet-decade-year-month.facet.limit">36</str>
+      <str name="f.facet-decade-year-month-day.facet.limit">90</str>
       <str name="f.facet-subjects.facet.sort">count</str>
       <str name="f.facet-author.facet.sort">count</str>
       <str name="f.facet-addressee.facet.sort">count</str>

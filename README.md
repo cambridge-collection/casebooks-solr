@@ -1,6 +1,6 @@
 # Instructions
 
-This repository is based off [CUDL Solr](https://github.com/cambridge-collection/cudl-solr). The default branch for the darwin release is `darwin-main`. `main` contains cudl-solr.
+This repository is based off [CUDL Solr](https://github.com/cambridge-collection/cudl-solr). The default branch for the darwin release is `epsilon-editorial`. `main` contains cudl-solr.
 
 The solr core configs and schemata are contained in `docker/solr`.
 
@@ -27,15 +27,9 @@ Ideally, we'd store the schema/conf settings in a separate repository - to keep 
 
 All queries will return the first page of results (max 20 items)
 
-To search the TEI documents, you would use the `dcp` core:
+To search the TEI documents, you would use the `epsilon` core:
 
-<http://localhost:8983/solr/dcp/select?> -- retrieve all TEI docs, the default when no query terms are given
-<http://localhost:8983/solr/dcp/select?q=flowers> -- retrieve all TEI docs with 'flowers'
-<http://localhost:8983/solr/dcp/select?q=%22confessing%20a%20murder%22> -- retrieve all TEI docs with the phrase "confessing a murder".
-
-To search the website pages, you would use the `site` core:
-
-<http://localhost:8983/solr/site/select?> -- retrieve all TEI docs, the default when no query terms are given
-<http://localhost:8983/solr/site/select?q=flowers> -- retrieve all TEI docs with 'flowers'
-<http://localhost:8983/solr/site/select?q=%22confessing%20a%20murder%22> -- retrieve all TEI docs with the phrase "confessing a murder".
+[http://localhost:8983/solr/dcp/select?](http://localhost:8983/solr/dcp/select?) -- retrieve all TEI docs, the default when no query terms are given
+[http://localhost:8983/solr/dcp/select?q=flowers](http://localhost:8983/solr/dcp/select?q=flowers) -- retrieve all TEI docs with 'flowers'
+[http://localhost:8983/solr/dcp/select?q=%22confessing%20a%20murder%22](http://localhost:8983/solr/dcp/select?q=%22confessing%20a%20murder%22) -- retrieve all TEI docs with the phrase "confessing a murder".
 
