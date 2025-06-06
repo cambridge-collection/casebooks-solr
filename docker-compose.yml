@@ -3,7 +3,7 @@ services:
     build:
       context: ./docker
       dockerfile: Dockerfile
-    container_name: epsilon-solr
+    container_name: casebooks-solr
     ports:
       - 8983:8983
     environment:

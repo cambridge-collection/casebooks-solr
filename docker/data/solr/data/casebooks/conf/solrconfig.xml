@@ -35,52 +35,7 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
   -->
-  <luceneMatchVersion>9.8</luceneMatchVersion>
-
-  <!-- <lib/> directives can be used to instruct Solr to load any Jars
-       identified and use them to resolve any "plugins" specified in
-       your solrconfig.xml or schema.xml (ie: Analyzers, Request
-       Handlers, etc...).
-
-       All directories and paths are resolved relative to the
-       instanceDir.
-
-       Please note that <lib/> directives are processed in the order
-       that they appear in your solrconfig.xml file, and are "stacked"
-       on top of each other when building a ClassLoader - so if you have
-       plugin jars with dependencies on other jars, the "lower level"
-       dependency jars should be loaded first.
-
-       If a "./lib" directory exists in your instanceDir, all files
-       found in it are included as if you had used the following
-       syntax...
-
-              <lib dir="./lib" />
-    -->
-
-  <!-- A 'dir' option by itself adds any files found in the directory
-       to the classpath, this is useful for including all jars in a
-       directory.
-
-       When a 'regex' is specified in addition to a 'dir', only the
-       files in that directory which completely match the regex
-       (anchored on both ends) will be included.
-
-       If a 'dir' option (with or without a regex) is used and nothing
-       is found that matches, a warning will be logged.
-
-       The example below can be used to load a Solr Module along
-       with their external dependencies.
-    -->
-    <!-- <lib dir="${solr.install.dir:../../../..}/modules/ltr/lib" regex=".*\.jar" /> -->
-
-  <!-- an exact 'path' can be used instead of a 'dir' to specify a
-       specific jar file.  This will cause a serious error to be logged
-       if it can't be loaded.
-    -->
-  <!--
-     <lib path="../a-jar-that-does-not-exist.jar" />
-  -->
+  <luceneMatchVersion>9.11</luceneMatchVersion>
 
   <!-- Data Directory
 
@@ -256,16 +211,9 @@
          is recommended (see below).
          "dir" - the target directory for transaction logs, defaults to the
                 solr data directory.
-         "numVersionBuckets" - sets the number of buckets used to keep
-                track of max version values when checking for re-ordered
-                updates; increase this value to reduce the cost of
-                synchronizing access to version buckets during high-volume
-                indexing, this requires 8 bytes (long) * numVersionBuckets
-                of heap space per Solr core.
     -->
     <updateLog>
       <str name="dir">${solr.ulog.dir:}</str>
-      <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
     </updateLog>
 
     <!-- AutoCommit
@@ -359,6 +307,21 @@
          of user specified boolean queries.
       -->
     <maxBooleanClauses>${solr.max.booleanClauses:1024}</maxBooleanClauses>
+
+    <!-- Minimum acceptable prefix-size for prefix-based queries.
+
+         Prefix-based queries consume memory in proportion to the number of terms in the index
+         that start with that prefix.  Short prefixes tend to match many many more indexed-terms
+         and consume more memory as a result, sometimes causing stability issues on the node.
+
+         This setting allows administrators to require that prefixes meet or exceed a specified
+         minimum length requirement.  Prefix queries that don't meet this requirement return an
+         error to users.  The limit may be overridden on a per-query basis by specifying a
+         'minPrefixQueryTermLength' local-param value.
+
+         The flag value of '-1' can be used to disable enforcement of this limit.
+    -->
+    <minPrefixQueryTermLength>${solr.query.minPrefixLength:-1}</minPrefixQueryTermLength>
 
     <!-- Solr Internal Query Caches
          Starting with Solr 9.0 the default cache implementation used is CaffeineCache.
@@ -493,23 +456,6 @@
          queryResultCache.
       -->
     <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
-
-  <!-- Use Filter For Sorted Query
-
-   A possible optimization that attempts to use a filter to
-   satisfy a search.  If the requested sort does not include
-   score, then the filterCache will be checked for a filter
-   matching the query. If found, the filter will be used as the
-   source of document ids, and then the sort will be applied to
-   that.
-
-   For most situations, this will not be useful unless you
-   frequently get the same search repeatedly with different sort
-   options, and none of them ever use "score"
--->
-    <!--
-       <useFilterForSortedQuery>true</useFilterForSortedQuery>
-      -->
 
     <!-- Query Related Event Listeners
 
@@ -687,30 +633,100 @@
       <str name="defType">edismax</str>
       <str name="q.alt">*</str>
       <str name="df">_text_</str>
-      <str name="qf">biblnum content_bibl-citation content_footnotes content_letter-source content_summary content_textual-content date_str display-name display-namereg-canonical display-repo-desc display-repo-tag document-id lognum meta-bibl-citation meta-bibl-location meta-date-web-only meta-view-mode namereg-id nameregnum path preview-tile recipient reponum repository repository-elem repository-full repository-id search-addressee search-addressee-canonical search-addressee-id search-author search-author-canonical search-author-id search-classmark search-correspondent search-correspondent-canonical search-correspondent-id search-dates search-name search-name-canonical search-name-synonym search-repository title</str>
+      <str name="qf">_text_</str>
       <str name="q.op">AND</str>
       <str name="hl">true</str>
-      <str name="hl.fl">biblnum content_bibl-citation content_footnotes content_letter-source content_summary content_textual-content date_str display-name display-namereg-canonical display-repo-desc display-repo-tag document-id meta-bibl-citation meta-date-web-only nameregnum recipient reponum search-addressee search-addressee-canonical search-author search-author-canonical search-classmark search-correspondent search-correspondent-canonical search-name search-repository title</str>
+      <str name="hl.fl">*</str>
       <str name="hl.requireFieldMatch">true</str>
       <str name="fl">*</str>
       <str name="spellcheck">true</str>
       <str name="hl.simple.pre"><![CDATA[<em class="match">]]></str>
       <str name="hl.simple.post"><![CDATA[</em>]]></str>
       <str name="facet">true</str>
-      <str name="facet.field">{!ex=dt key=f1-document-type}facet-document-type</str>
-      <str name="facet.field">{!ex=dt key=f1-author}facet-author</str>
-      <str name="facet.field">{!ex=dt key=f1-addressee}facet-addressee</str>
-      <str name="facet.field">{!ex=dt key=f1-correspondent}facet-correspondent</str>
-      <!--<str name="facet.field">facet-date</str>-->
-      <str name="facet.field">{!ex=dt key=f1-decade}facet-decade</str>
-      <str name="facet.field">{!ex=dt key=f1-decade-year}facet-decade-year</str>
-      <str name="facet.field">{!ex=dt key=f1-decade-year-month}facet-decade-year-month</str>
-      <str name="facet.field">{!ex=dt key=f1-decade-year-month-day}facet-decade-year-month-day</str>
-      <str name="facet.field">{!ex=dt key=f1-repository}facet-repository</str>
-      <!--<str name="facet.field">facet-term</str>-->
-      <str name="facet.field">{!ex=dt key=f1-contributor}facet-contributor</str>
-      <str name="facet.field">{!ex=dt key=f1-transcription-available}facet-transcription-available</str>
-      <str name="facet.field">{!ex=dt key=f1-cdl-images-linked}facet-cdl-images-linked</str>
+      <str name="facet.field">{!ex=dt key=f1-astrologer-0}facet-astrologer-0</str>
+      <str name="facet.field">{!ex=dt key=f1-astrologer-1}facet-astrologer-1</str>
+      <str name="facet.field">{!ex=dt key=f1-damaged}facet-damaged</str>
+      <str name="facet.field">{!ex=dt key=f1-date-0}facet-date-0</str>
+      <str name="facet.field">{!ex=dt key=f1-date-1}facet-date-1</str>
+      <str name="facet.field">{!ex=dt key=f1-date-2}facet-date-2</str>
+      <str name="facet.field">{!ex=dt key=f1-date-3}facet-date-3</str>
+      <str name="facet.field">{!ex=dt key=f1-death-cert}facet-death-cert</str>
+      <str name="facet.field">{!ex=dt key=f1-deleted}facet-deleted</str>
+      <str name="facet.field">{!ex=dt key=f1-dob-cert}facet-dob-cert</str>
+      <str name="facet.field">{!ex=dt key=f1-document-type-0}facet-document-type-0</str>
+      <str name="facet.field">{!ex=dt key=f1-document-type-1}facet-document-type-1</str>
+      <str name="facet.field">{!ex=dt key=f1-document-type-2}facet-document-type-2</str>
+      <str name="facet.field">{!ex=dt key=f1-document-type-3}facet-document-type-3</str>
+      <str name="facet.field">{!ex=dt key=f1-entity-age-band-0}facet-entity-age-band-0</str>
+      <str name="facet.field">{!ex=dt key=f1-entity-age-band-1}facet-entity-age-band-1</str>
+      <str name="facet.field">{!ex=dt key=f1-entity-question-asked-0}facet-entity-question-asked-0</str>
+      <str name="facet.field">{!ex=dt key=f1-entity-question-asked-1}facet-entity-question-asked-1</str>
+      <str name="facet.field">{!ex=dt key=f1-entity-question-asked-2}facet-entity-question-asked-2</str>
+      <str name="facet.field">{!ex=dt key=f1-entity-question-asked-3}facet-entity-question-asked-3</str>
+      <str name="facet.field">{!ex=dt key=f1-event-mentioned}facet-event-mentioned</str>
+      <str name="facet.field">{!ex=dt key=f1-extent-of-transcription}facet-extent-of-transcription</str>
+      <str name="facet.field">{!ex=dt key=f1-gentry}facet-gentry</str>
+      <str name="facet.field">{!ex=dt key=f1-hands}facet-hands</str>
+      <str name="facet.field">{!ex=dt key=f1-how-did-it-take-place-0}facet-how-did-it-take-place-0</str>
+      <str name="facet.field">{!ex=dt key=f1-how-did-it-take-place-1}facet-how-did-it-take-place-1</str>
+      <str name="facet.field">{!ex=dt key=f1-identified-entity-is-asking-about}facet-identified-entity-is-asking-about</str>
+      <str name="facet.field">{!ex=dt key=f1-identified-entity-practice}facet-identified-entity-practice</str>
+      <str name="facet.field">{!ex=dt key=f1-identified-entity-role-0}facet-identified-entity-role-0</str>
+      <str name="facet.field">{!ex=dt key=f1-identified-entity-role-1}facet-identified-entity-role-1</str>
+      <str name="facet.field">{!ex=dt key=f1-identified-entity-role-2}facet-identified-entity-role-2</str>
+      <str name="facet.field">{!ex=dt key=f1-identified-entity-role-3}facet-identified-entity-role-3</str>
+      <str name="facet.field">{!ex=dt key=f1-identified-entity-was-never}facet-identified-entity-was-never</str>
+      <str name="facet.field">{!ex=dt key=f1-info-0}facet-info-0</str>
+      <str name="facet.field">{!ex=dt key=f1-info-1}facet-info-1</str>
+      <str name="facet.field">{!ex=dt key=f1-info-2}facet-info-2</str>
+      <str name="facet.field">{!ex=dt key=f1-info-3}facet-info-3</str>
+      <str name="facet.field">{!ex=dt key=f1-judgment}facet-judgment</str>
+      <str name="facet.field">{!ex=dt key=f1-language}facet-language</str>
+      <str name="facet.field">{!ex=dt key=f1-number-of-astrologers}facet-number-of-astrologers</str>
+      <str name="facet.field">{!ex=dt key=f1-number-of-patients}facet-number-of-patients</str>
+      <str name="facet.field">{!ex=dt key=f1-number-of-practitioners}facet-number-of-practitioners</str>
+      <str name="facet.field">{!ex=dt key=f1-number-of-querents}facet-number-of-querents</str>
+      <str name="facet.field">{!ex=dt key=f1-occupation-0}facet-occupation-0</str>
+      <str name="facet.field">{!ex=dt key=f1-occupation-1}facet-occupation-1</str>
+      <str name="facet.field">{!ex=dt key=f1-occupation-2}facet-occupation-2</str>
+      <str name="facet.field">{!ex=dt key=f1-occupation-mentioned}facet-occupation-mentioned</str>
+      <str name="facet.field">{!ex=dt key=f1-patient-age-band-0}facet-patient-age-band-0</str>
+      <str name="facet.field">{!ex=dt key=f1-patient-age-band-1}facet-patient-age-band-1</str>
+      <str name="facet.field">{!ex=dt key=f1-patient-consent}facet-patient-consent</str>
+      <str name="facet.field">{!ex=dt key=f1-patient-knowledge}facet-patient-knowledge</str>
+      <str name="facet.field">{!ex=dt key=f1-patient-sex}facet-patient-sex</str>
+      <str name="facet.field">{!ex=dt key=f1-patient}facet-patient</str>
+      <str name="facet.field">{!ex=dt key=f1-person-sex}facet-person-sex</str>
+      <str name="facet.field">{!ex=dt key=f1-practice}facet-practice</str>
+      <str name="facet.field">{!ex=dt key=f1-practitioner-0}facet-practitioner-0</str>
+      <str name="facet.field">{!ex=dt key=f1-practitioner-1}facet-practitioner-1</str>
+      <str name="facet.field">{!ex=dt key=f1-practitioner-is-astrologer}facet-practitioner-is-astrologer</str>
+      <str name="facet.field">{!ex=dt key=f1-practitioner-is-patient}facet-practitioner-is-patient</str>
+      <str name="facet.field">{!ex=dt key=f1-practitioner-is-querent}facet-practitioner-is-querent</str>
+      <str name="facet.field">{!ex=dt key=f1-querent-age-band-0}facet-querent-age-band-0</str>
+      <str name="facet.field">{!ex=dt key=f1-querent-age-band-1}facet-querent-age-band-1</str>
+      <str name="facet.field">{!ex=dt key=f1-querent-identified}facet-querent-identified</str>
+      <str name="facet.field">{!ex=dt key=f1-querent-is-asking-about}facet-querent-is-asking-about</str>
+      <str name="facet.field">{!ex=dt key=f1-querent-sex}facet-querent-sex</str>
+      <str name="facet.field">{!ex=dt key=f1-querent}facet-querent</str>
+      <str name="facet.field">{!ex=dt key=f1-question-asked-0}facet-question-asked-0</str>
+      <str name="facet.field">{!ex=dt key=f1-question-asked-1}facet-question-asked-1</str>
+      <str name="facet.field">{!ex=dt key=f1-question-asked-2}facet-question-asked-2</str>
+      <str name="facet.field">{!ex=dt key=f1-question-asked-3}facet-question-asked-3</str>
+      <str name="facet.field">{!ex=dt key=f1-recipe}facet-recipe</str>
+      <str name="facet.field">{!ex=dt key=f1-residence-0}facet-residence-0</str>
+      <str name="facet.field">{!ex=dt key=f1-residence-1}facet-residence-1</str>
+      <str name="facet.field">{!ex=dt key=f1-residence-2}facet-residence-2</str>
+      <str name="facet.field">{!ex=dt key=f1-residence-3}facet-residence-3</str>
+      <str name="facet.field">{!ex=dt key=f1-residence-4}facet-residence-4</str>
+      <str name="facet.field">{!ex=dt key=f1-residence-mentioned}facet-residence-mentioned</str>
+      <str name="facet.field">{!ex=dt key=f1-shelfmark}facet-shelfmark</str>
+      <str name="facet.field">{!ex=dt key=f1-social-network-recorded}facet-social-network-recorded</str>
+      <str name="facet.field">{!ex=dt key=f1-time-of-day-0}facet-time-of-day-0</str>
+      <str name="facet.field">{!ex=dt key=f1-time-of-day-1}facet-time-of-day-1</str>
+      <str name="facet.field">{!ex=dt key=f1-time-of-day-2}facet-time-of-day-2</str>
+      <str name="facet.field">{!ex=dt key=f1-treatment}facet-treatment</str>
+      <str name="facet.field">{!ex=dt key=f1-volume-name}facet-volume-name</str>
       <str name="facet.sort">index</str>
       <str name="facet.mincount">1</str>
       <str name="facet.limit">-1</str>
@@ -719,20 +735,49 @@
       <str name="hl.fragsizeIsMinimum">false</str>
       <str name="hl.snippets">999</str>
       <str name="hl.bs.type">CHARACTER</str>
-      <str name="hl.maxAnalyzedChars">1048576</str><!-- 1mb -->
-      <str name="f.facet-author.facet.limit">5</str>
-      <str name="f.facet-addressee.facet.limit">5</str>
-      <str name="f.facet-correspondent.facet.limit">5</str>
-      <str name="f.facet-repository.facet.limit">5</str>
-      <str name="f.facet-volume.facet.limit">5</str>
-      <str name="f.facet-decade.facet.limit">200</str>
-      <str name="f.facet-decade-year.facet.limit">30</str>
-      <str name="f.facet-decade-year-month.facet.limit">36</str>
-      <str name="f.facet-decade-year-month-day.facet.limit">90</str>
-      <str name="f.facet-subjects.facet.sort">count</str>
-      <str name="f.facet-author.facet.sort">count</str>
-      <str name="f.facet-addressee.facet.sort">count</str>
-      <str name="f.facet-correspondent.facet.sort">count</str>
+      <str name="f.facet-volume-name.facet.limit">5</str>
+      <str name="f.facet-shelfmark.facet.limit">5</str>
+      <str name="f.facet-hands.facet.limit">10</str>
+      <str name="f.facet-astrologer-1.facet.limit">-1</str>
+      <str name="f.facet-date-1.facet.limit">-1</str>
+      <str name="f.facet-date-2.facet.limit">0</str>
+      <str name="f.facet-date-3.facet.limit">0</str>
+      <str name="f.facet-document-type-1.facet.limit">-1</str>
+      <str name="f.facet-document-type-2.facet.limit">0</str>
+      <str name="f.facet-document-type-3.facet.limit">0</str>
+      <str name="f.facet-entity-age-band-1.facet.limit">-1</str>
+      <str name="f.facet-entity-question-asked-1.facet.limit">-1</str>
+      <str name="f.facet-entity-question-asked-2.facet.limit">0</str>
+      <str name="f.facet-entity-question-asked-3.facet.limit">0</str>
+      <str name="f.facet-how-did-it-take-place-1.facet.limit">-1</str>
+      <str name="f.facet-identified-entity-role-1.facet.limit">-1</str>
+      <str name="f.facet-identified-entity-role-2.facet.limit">0</str>
+      <str name="f.facet-identified-entity-role-3.facet.limit">0</str>
+      <str name="f.facet-info-1.facet.limit">-1</str>
+      <str name="f.facet-info-2.facet.limit">0</str>
+      <str name="f.facet-info-3.facet.limit">0</str>
+      <str name="f.facet-occupation-1.facet.limit">-1</str>
+      <str name="f.facet-occupation-2.facet.limit">0</str>
+      <str name="f.facet-patient-age-band-1.facet.limit">-1</str>
+      <str name="f.facet-practitioner-1.facet.limit">-1</str>
+      <str name="f.facet-querent-age-band-1.facet.limit">-1</str>
+      <str name="f.facet-question-asked-1.facet.limit">1</str>
+      <str name="f.facet-question-asked-2.facet.limit">0</str>
+      <str name="f.facet-question-asked-3.facet.limit">0</str>
+      <str name="f.facet-residence-1.facet.limit">-1</str>
+      <str name="f.facet-residence-2.facet.limit">0</str>
+      <str name="f.facet-residence-3.facet.limit">0</str>
+      <str name="f.facet-residence-4.facet.limit">0</str>
+      <str name="f.facet-time-of-day-1.facet.limit">-1</str>
+      <str name="f.facet-time-of-day-2.facet.limit">0</str>   
+      <str name="f.facet-patient.facet.limit">10</str>
+      <str name="f.facet-querent.facet.limit">10</str>
+      <str name="f.facet-patient.facet.sort">count</str>
+      <str name="f.facet-querent.facet.sort">count</str>
+      <str name="f.facet-practitioner-0.facet.sort">count</str>
+      <str name="f.facet-astrologer-0.facet.sort">count</str>
+      <str name="f.facet-hands.facet.sort">count</str>
+      <str name="f.facet-language.facet.sort">count</str>
       <int name="rows">20</int>
     </lst>
   </initParams>
@@ -961,6 +1006,10 @@
     <str name="pattern">[^\w-\.]</str>
     <str name="replacement">_</str>
   </updateProcessor>
+  <updateProcessor class="solr.NumFieldLimitingUpdateRequestProcessorFactory" name="max-fields">
+    <int name="maxFields">1000</int>
+    <bool name="warnOnly">true</bool>
+  </updateProcessor>
   <updateProcessor class="solr.ParseBooleanFieldUpdateProcessorFactory" name="parse-boolean"/>
   <updateProcessor class="solr.ParseLongFieldUpdateProcessorFactory" name="parse-long"/>
   <updateProcessor class="solr.ParseDoubleFieldUpdateProcessorFactory" name="parse-double"/>
@@ -1004,10 +1053,11 @@
       <str name="fieldType">pdoubles</str>
     </lst>
   </updateProcessor>
+  
 
   <!-- The update.autoCreateFields property can be turned to false to disable schemaless mode -->
   <updateRequestProcessorChain name="add-unknown-fields-to-the-schema" default="${update.autoCreateFields:true}"
-           processor="uuid,remove-blank,field-name-mutating,parse-boolean,parse-long,parse-double,parse-date,add-schema-fields">
+           processor="uuid,remove-blank,field-name-mutating,max-fields,parse-boolean,parse-long,parse-double,parse-date,add-schema-fields">
     <processor class="solr.LogUpdateProcessorFactory"/>
     <processor class="solr.DistributedUpdateProcessorFactory"/>
     <processor class="solr.RunUpdateProcessorFactory"/>
