@@ -675,6 +675,7 @@
     <field name="sex" type="text_general" indexed="false" stored="false"/>
     <field name="shelfmark" type="text_general" indexed="false" stored="false"/>
     <field name="social-network-recorded" multiValued="false" type="text_general" indexed="false" stored="false"/>
+  <field name="sort-author" type="string" multiValued="false" docValues="true" indexed="false" stored="false"/>
   <field name="sort-shelfmark" type="string" multiValued="false" docValues="true" indexed="false" stored="false"/>
   <field name="sort-volume-name" type="string" multiValued="false" docValues="true" indexed="false" stored="false"/>
   <field name="sort-title" type="string" multiValued="false" docValues="true" indexed="false" stored="false"/>
