@@ -2,3 +2,4 @@
 /.idea
 /solr/data/solr/data/*/data/
 external-vol
+*.env.make
